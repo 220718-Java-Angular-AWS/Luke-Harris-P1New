@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New User Form</title>
+</head>
+<body>
+    <form onsubmit = "return false">
+        <h1>New User</h1>
+            <label>First Name: </label>
+            <input type="text" placeholder="Enter First Name" id="firstName" required>
+            <br>
+            <label>Last Name: </label>
+            <input type="text" placeholder="Enter Last Name" id="lastName" required>
+            <br>
+            <label>Email: </label>
+            <input type="text" placeholder="Enter Email" id="email" required>
+            <br>
+            <label>Password: </label>
+            <input type="password" placeholder="Enter Password" id="userPass" required>
+            <br>
+            
+    </form> 
+    <button type="submit" id="btn" onclick="postEmployee()">Register</button>
+    
+</body>
+<script>
+    //Make an API call for Employees
+    async function postEmployee() {
+        let employee = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            email: document.getElementById("email").value,
+            userPass: document.getElementById("userPass").value
+        }
+        //url is a server location
+        let url = 'http://localhost:8080/Project1/users';
+        let response = await fetch(url,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(employee)
+        });
+
+       
+
+        if(response.status == 200){
+            alert("Success!")
+            if(localStorage.getItem == null){
+                document.getElementById("login").addEventListener("click", function() {
+                window.localStorage.setItem('userId', employee.employeeId);
+            });
+            }else{
+                localStorage.getItem('userId');
+                localStorage.setItem('userId', employee.employeeId);
+            }
+            location.href = "file:///C:/Users/harri/OneDrive/Desktop/Revature/repositories/Luke-Harris-P1/Project1/Project1UI/Employee/Main%20Menu.html";
+        }
+    };
+
+    async function returnLogIn() {
+        location.href = "file:///C:/Users/harri/OneDrive/Desktop/Revature/repositories/Luke-Harris-P1/Project1/Project1UI/Employee/Log%20In.html"
+    }
+
+    
+</script>
+</html>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<web-app
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+    version="2.5">
+
+    <listener>
+        <listener-class>servlets.DependencyLoaderListener</listener-class>
+    </listener>
+
+
+    <servlet>
+        <servlet-name>pingServlet</servlet-name>
+        <servlet-class>servlets.PingServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>pingServlet</servlet-name>
+        <url-pattern>/ping</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>userServlet</servlet-name>
+        <url-pattern>/users</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>userServlet</servlet-name>
+        <servlet-class>servlets.UserServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>requestsServlet</servlet-name>
+        <url-pattern>/requests</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>requestsServlet</servlet-name>
+        <servlet-class>servlets.RequestsServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- CORS FILTER -->
+    <filter>
+        <filter-name>CORSFilter</filter-name>
+        <filter-class>servlets.CORSFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CORSFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- /CORS FILTER -->
+
+
+
+</web-app>

@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="return false">
+        <h1>Find User ID</h1>
+            <label>Enter User ID</label>
+            <input type="number" placeholder="ID" id="userId" required>
+            <button type="submit" id="myBtn" onclick="viewUser(); clrUser()">Find</button>
+            <button type="button" onclick="viewAllUsers()">Find All</button>
+    </form>
+    
+<br>
+<div id="UserId"></div>
+<div id="userList"></div>
+
+</body>
+<script>
+    async function viewAllUsers() {
+        let url= 'http://localhost:8080/Project1/users';
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        });
+        let array = await response.json();
+        let htmlElement = document.getElementById('userList');
+        for(let i = 0; i < array.length; i++){
+            let user = array[i];
+            htmlElement.innerHTML += "<p>User ID: " + user.userId + "</p>";
+            htmlElement.innerHTML += "<p>First Name: " + user.firstName + "</p>";
+            htmlElement.innerHTML += "<p>Last Name: " + user.lastName + "</p>";
+            htmlElement.innerHTML += "<p>Email: " + user.email + "</p>";
+            htmlElement.innerHTML += "<p>Password: " + user.userPass + "</p>";
+        }
+    }
+    
+    async function viewUser() {
+    
+        let userId = document.getElementById("userId").value;
+        let url = 'http://localhost:8080/Project1/users?user_id=' + userId;
+        let response = await fetch(url, {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        });
+        
+        let employee = await response.json();
+        let table = document.getElementById('UserId');
+        
+    
+        table.style.border = "1px solid black";
+        table.style.background = "#8fccf2";
+            
+        if(employee.userId != null){
+            table.innerHTML += "<tr><th style='width: 5%; border: 1px solid black'>" + employee.userId + 
+                "<br>" +
+                "</th><th style='width: 10%; border: 1px solid black'>" + employee.email +
+                "<br>" +
+                "</th><th style='border: 1px solid black'>" + employee.firstName +
+                "<br>" +
+                "</th><th style='border: 1px solid black'>" + employee.lastName +
+                "<br>" +
+                "</th><th style='border: 1px solid black'>" + employee.userPass +
+                "</th></tr>"
+            
+        }if(response.status == 200) {
+            
+        }
+        else{
+            alert("Employee does not exist!")
+            table.style.border = "none";
+            table.innerHTML = "";
+        }
+    }
+    
+    async function clrList() {
+        let list = document.getElementById("userList");
+        list.innerHTML = " ";
+    }
+    async function clrUser(){
+        let userId = document.getElementById("userId");
+       
+    }
+</script>
+</html>

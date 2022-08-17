@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Create Request</h1>
+    User ID: <input type="text" id="user_id"><br>
+    What do you need Reimbursement for?: <input type="text" id="reason_for_reimbursement"><br>
+    Explanation: <input type="text" id="reason_for_request"><br>
+    Amount Requested: <input type="text" id="amount_requested"><br>
+    <button type="button" onclick="createRequest()">Add New Request</button>
+    <div id="idHere"></div>
+
+    <h2>Pending Requests</h2>
+</body>
+
+<script>
+    let htmlElement= document.getElementById('idHere')
+    htmlElement.innerHTML +="<label>User ID#: </label>"+ window.sessionStorage.getItem('userID')
+
+    async function createRequest() {
+        let request = {
+            user_id: document.getElementById("user_id").value,
+            reason_for_reimbursement: document.getElementById("reason_for_reimbursement").value,
+            reason_for_request: document.getElementById("reason_for_request").value,
+            amount_requested: document.getElementById("amount_requested").value
+        }
+        
+        let url = 'http://localhost:8080/Project1/requests';
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf8'
+            },
+            body: JSON.stringify(request)
+        });
+        if(response.status == 200) {
+            alert("Done!");
+        } else("Error:(")
+    }
+</script>
+</html>

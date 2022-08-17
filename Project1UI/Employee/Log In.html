@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+</head>
+<body>
+    <form onsubmit = "return false">
+        <h1>Log In</h1>
+            <label>Enter Email: </label>
+            <input type="text" placeholder="Enter Email or Username" id="email" required>
+            <br>
+            <label>Enter Password: </label>
+            <input type="password" placeholder="Enter Password" id="userPass" required>
+            <br>
+            <button type="submit" id="login" onclick="logInEmployee()">Log In</button>
+    </form>    
+</body>
+<script>
+    async function logInEmployee() {
+        email = document.getElementById("email").value;
+        userPass = document.getElementById("userPass").value;
+        let url = 'http://localhost:8080/Project1/users?email=' + email + '&userPass=' + userPass;
+        let response = await fetch(url, {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/jason; charset=utf-8'
+            }
+        });
+        let employee = await response.json();
+        if(employee.userId != null){
+            window.sessionStorage.setItem('userID', employee.userId)
+
+        sessionStorage.setItem('admin', employee.admin);
+        }
+
+        if(response.status == 200)
+        {
+            
+            if(localStorage.getItem == null){
+                document.getElementById("login").addEventListener("click", function() {
+                window.localStorage.setItem('userId', employee.userId);
+                localStorage.setItem('admin', employee.admin);
+            });
+            }else{
+                localStorage.getItem('userId');
+                localStorage.getItem('admin');
+                localStorage.setItem('userId', employee.userId);
+                localStorage.setItem('admin', employee.admin);
+            }
+            
+            alert("Welcome " + employee.firstName + " " + employee.lastName);
+            if(employee.admin == true){
+                location.href = "file:///C:/Users/harri/OneDrive/Desktop/Revature%20Project%201/Project1UI/Admin/Admin%20Menu.html";
+            }else{
+                location.href = "file:///C:/Users/harri/OneDrive/Desktop/Revature%20Project%201/Project1UI/Employee/createRequest.html";
+            }
+            
+        }
+        
+        
+    }
+    
+    async function registerEmployee() {
+        location.href = "file:///C:/Users/harri/OneDrive/Desktop/Revature%20Project%201/Project1UI/Employee/createUser.html"
+    }
+</script>
+</html>
