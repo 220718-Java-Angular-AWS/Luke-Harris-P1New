@@ -43,7 +43,7 @@
     async function viewUser() {
     
         let userId = document.getElementById("userId").value;
-        let url = 'http://localhost:8080/Project1/users?user_id=' + userId;
+        let url = 'http://localhost:8080/Project1/users?userId=' + userId;
         let response = await fetch(url, {
             method: 'GET',
             headers:{

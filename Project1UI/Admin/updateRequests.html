@@ -69,7 +69,7 @@
         });
         let request = await response.json();
 
-        document.getElementByName('user_id').value= request.user_id;
+        document.getElementByName('userId').value= request.userId;
         document.getElementByName('reason_for_request').value = request.reason_for_request;
         document.getElementByName('reason_for_reimbursement').value = request.reason_for_reimbursement;
         document.getElementByName('amount_requested').value = request.amount_requested

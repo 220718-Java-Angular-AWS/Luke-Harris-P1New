@@ -8,10 +8,13 @@
 </head>
 <body>
     <form onsubmit="return false">
-    <h1>Delete Target User</h1>
+    <h1>Update User</h1>
     <label>Enter User ID: </label>
     <input type="number" id="userId" required>
-    <button type="submit" onclick="deleteUser()">submit</button>
+    <br><br>
+    <button type="submit" onclick="deleteUser()">Delete User</button>
+    <br><br>
+    <button type="submit" onclick="makeAdmin()">Make user an admin</button>
 </form>
 </body>
 <script>
@@ -27,6 +30,34 @@
         if (response.status == 200) {
             alert("User Deleted")
         }
+    }
+    async function makeAdmin() {
+        let userId = document.getElementById("userId").value;
+        let url = 'http://localhost:8080/Project1/users?userId=' + userId
+        let change = await fetch(url, {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        });
+       
+
+        let changes = await change.json();
+        changes.admin = true 
+      
+
+        let response = await fetch(url, {
+            
+            method: 'PUT',
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            body: JSON.stringify(changes)
+        });
+        if(response.status == 200) {
+            alert("user is an admin")
+        }
+        
     }
 </script>
 </html>
