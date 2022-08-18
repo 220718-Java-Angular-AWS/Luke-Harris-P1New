@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Approve or Deny a Request</h1>
+    <input type="number" id="aReqId" onkeypress="return event.charCode >= 48 && event.charCode <= 57" >
+    <button class="btn" type="button" onclick="displayReqs()">View Requests</button>
+    <div id="reqQuestion"></div><br><br>
+    <div id="reqList"></div>
+</body>
+<script>
+    async function displayReqs(){
+        let url = 'http://localhost:8080/Project1/requests?=request_id=' + document.getElementById('aReqId').value
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+        let htmlElement = document.getElementById('reqQuestion');
+        let req = await response.json()
+        if(req.approved == "Pending") {
+            htmlElement.innerHTML += "<h4>Request ID: " + req.request_id + "</h4>"
+            htmlElement.innerHTML += "<h4>User ID: " + req.user_id + "</h4>"
+            htmlElement.innerHTML += "<h4>Reason: " + req.reason_for_reimbursement + "</h4>"
+            htmlElement.innerHTML += "<h4>Comment: " + req.reason_for_request + "</h4>"
+            htmlElement.innerHTML += "<p>Amount: $" + req.amount_requested + "</p>"
+            htmlElement.innerHTML += "<p>Status: "+ req.approved_denied+"</p><br><br>"
+            htmlElement.innerHTML +="<select name='reason' id='Choice' required><optgroup label='Their Fate:'> <option value='Denied'> Let them eat cake! (Deny)</option> <option value='Approved'>Bake them a cake! (Approve)</option> </optgroup> </select> <br>"
+            htmlElement.innerHTML +=" <br> <button class='btn' type ='button' onclick='subChoice()''>Cast Your decision upon the Penniless</button>"
+        } else{
+            alert("The request has already been approved or denied")
+        }
+    }
+    async function subChoice() {
+        let url = 'http://localhost:8080/Project1/requests?request_id=' + document.getElementById('aReqId').value
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application.json;charset=utf-8'
+            }
+        });
+        let req = await response.json();
+        var decision = document.getElementsByName('Choice');
+
+        let newRequest = {
+            "request_id": req.request_id,
+            "user_id": req.user_id,
+            "reason_for_reimbursement": req.reason_for_reimbursement,
+            "reason_for_request": req.reason_for_request,
+            "amount_requested": req.amount_requested,
+            "approved_denied":document.getElementById('Choice').value
+        }
+        let urls = 'http://localhost:8080/Project1/requests'
+        let responses = await fetch(urls, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'},
+            body:JSON.stringify(newRequest)
+        });
+    if(responses.status == 200){
+        alert('Request updated')
+    }
+    }
+    (async function showRequests(){
+        let url = 'http://localhost:8080/Project1/requests'
+
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+        let array = await response.json();
+        let htmlElement = document.getElementById('requestList');
+        htmlElement.innerHTML = ' '
+        for(let i = 0; i < array.length; i++) {
+            let req = array[i];
+            if(req.approved == "Pending") {
+                htmlElement.innerHTML += "<h4>Request ID: " + req.request_id + "</h4>"
+                htmlElement.innerHTML += "<h4>Reason: " + req.reason_for_reimbursement + "</h4>"
+                htmlElement.innerHTML += "<h4>Comment: " + req.reason_for_request + "</h4>"
+                htmlElement.innerHTML += "<p>Amount: $" + req.amount_requested + "</p>"
+                htmlElement.innerHTML += "<p>Status: "+ req.approved_denied+"</p><br><br>"
+            }
+        }
+    })();
+</script>
+</html>

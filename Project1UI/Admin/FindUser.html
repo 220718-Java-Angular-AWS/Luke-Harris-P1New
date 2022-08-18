@@ -11,7 +11,7 @@
             <label>Enter User ID</label>
             <input type="number" placeholder="ID" id="userId" required>
             <button type="submit" id="myBtn" onclick="viewUser(); clrUser()">Find</button>
-            <button type="button" onclick="viewAllUsers()">Find All</button>
+            <button type="button" onclick="viewAllUsers(); clrList()">Find All</button>
     </form>
     
 <br>
@@ -80,13 +80,13 @@
         }
     }
     
-    async function clrList() {
-        let list = document.getElementById("userList");
-        list.innerHTML = " ";
+    async function clrUser() {
+        let clr = document.getElementById("userId");
+        clr.innerHTML = " "
     }
-    async function clrUser(){
-        let userId = document.getElementById("userId");
-       
+    async function clrList(){
+        let clr = document.getElementById("userId");
+        clr.innerHTML = " "
     }
 </script>
 </html>

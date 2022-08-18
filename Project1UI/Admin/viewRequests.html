@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="return false">
+        <h1>Search for Request</h1>
+        <label>By Request ID: </label>
+        <input type="number" placeholder="Enter Request ID" id="request_id">
+        <p id="requestId"></p>
+        <button type="submit" onclick="findRequest(); clrReq()">Find Request</button>
+        <h1>Pending Requests</h1>
+        <button type="submit" onclick="allRequests(); clrAll()">View All Requests</button>
+
+    </form>
+<div id="requestList"></div>
+</body>
+<script>
+    async function findRequest() {
+        let request_id = document.getElementById("request_id").value;
+        let url = 'http://localhost:8080/Project1/requests?request_id=' + request_id;
+        let response = await fetch(url, {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        });
+        let request = await response.json();
+        let reqTable = document.getElementById('requestId');
+        console.log(request)
+        if(request.user_id != null) {
+        reqTable.innerHTML += "Request ID: " + request.request_id + 
+        "<br>User ID: " + request.user_id +
+        "<br>Reason for Reimbursement: " + request.reason_for_reimbursement +
+        "<br>Reason for Request: " + request.reason_for_request +
+        "<br>Amount Requested: " + request.amount_requested +
+        "<br>Approval Status: " + request.approved_denied;
+
+
+        }else{
+        alert("No Request Found")
+        }
+    }
+
+    async function allRequests() {
+        let url= 'http://localhost:8080/Project1/requests';
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        });
+        let array = await response.json();
+        let htmlElement = document.getElementById('requestList');
+        for(let i = 0; i < array.length; i++){
+            let request = array[i];
+            htmlElement.innerHTML += "<p>Request ID: " + request.request_id + "</p>";
+            htmlElement.innerHTML += "<p>User ID: " + request.user_id + "</p>";
+            htmlElement.innerHTML += "<p>First Name: " + request.reason_for_reimbursement + "</p>";
+            htmlElement.innerHTML += "<p>Last Name: " + request.reason_for_request + "</p>";
+            htmlElement.innerHTML += "<p>Amout Requested: " + request.amount_requested+ "</p>";
+        }
+    }
+    async function clrAll() {
+        let clr = document.getElementById('requestList');
+        clr.innerHTML = " "
+    }
+    async function clrReq() {
+        let clr = document.getElementById('requestId');
+        clr.innerHTML = " "
+    }
+</script>
+</html>

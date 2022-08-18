@@ -7,39 +7,103 @@
     <title>Document</title>
 </head>
 <body>
-    <form onsubmit="return false">
-    <h1>Update Requests</h1>
-    <input type="number" id="aRequestId" onkeypress="return event.charCode >= 48 && event.charCode <= 57" >
-    <button type="button" onclick="viewReq()">View Requests</button>
+    <h1>Update Request Status</h1>
+    <form action="">
+        <label for="Id">Request ID</label>
+        <select name="request_id" id="Id" style="width: 100px"></select>
+        <button type="button" id="submitId" onclick="showRequest()">View Requests</button>
     </form>
-    <div id="request"></div>
     <br>
-    <div id="requestList"></div>
-
-    
+    <label>User ID: </label>
+    <input type="number" name="userId" id="userId" value="">
+    <br><br>
+    <label>Reason for Reimbursement: </label>
+    <input type="text" name="rfreim" id="rfreim" value="" style="width: 500px;">
+    <br><br>
+    <label>Amount Requested: </label>
+    <input type="number" name="amount" min="0" value="" maxlength="1000000" step=".01">
+    <br><br>
+    <label>Reason for Request: </label>
+    <textarea type="text" name="message" rows="6" cols="100" value="" id="rfreq"></textarea>
+    <br>
+    <select id="status">
+        <option value="PENDING">PENDING</option>
+        <option value="APPROVED">APPROVED</option>
+        <option value="DENIED">DENIED</option>
+    </select>
+    <br><br>
+    <button type="button" id="btn" onclick="editRequest()">Submit</button>
+    <button type="button" onclick="returnMain()">Back</button>
 </body>
 <script>
-    async function viewReq() {
-        let urls = 'http://localhost:8080/Project1/requests?request_id=' + document.getElementById('aRequestId').value
-        let update = {
-            requestId: document.getElementById("requestId").value,
-            user_id: document.getElementById("user_id").value,
-            reason_for_reimbursement: document.getElementById("reasons_for_reimbursement").value,
-            reason_for_request: document.getElementById("reason_for_request").value,
-            amount_requested: document.getElementById("amount_requested").value,
-            approved_denied: document.getElementById("approved_denied").value
-        } 
+    let currentUserId = window.localStorage.getItem('userId');
+    let adminStatus = localStorage.getItem('admin');
+
+    (async function selectRequest() {
         let url = 'http://localhost:8080/Project1/requests';
-        let response = await fetch(url,{
-            method: '',
-            headers:{
-                'Content-Type': 'applilcation/json;charset=utf-8'
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
             }
         });
-        if(response.status == 200) {
-            alert("Request Approved!")
+
+        let array = await response.json();
+        let selector = document.getElementById("Id");
+        for(let i=0; i < array.length; i++){
+            let request = array[i]
+
+            selector.innerHTML += "<option>" + request.request_id + "</option>";
+
         }
+    })();
+    
+    async function showRequest() {
+        let request_id = document.getElementById("Id").value;
+        let url = 'http://localhost:8080/Project1/requests?request_id=' + request_id;
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        });
+        let request = await response.json();
+
+        document.getElementByName('user_id').value= request.user_id;
+        document.getElementByName('reason_for_request').value = request.reason_for_request;
+        document.getElementByName('reason_for_reimbursement').value = request.reason_for_reimbursement;
+        document.getElementByName('amount_requested').value = request.amount_requested
 
     }
+    async function editRequest() {
+        let request_id = document.getElementById("Id").value;
+        let approved_denied = document.getElementById("status").value;
+        let request = {
+            reason_for_reimbursement: document.getElementById("reason_for_reimbursement"),
+            reason_for_request: document.getElementById("reason_for_request").value,
+            amount_requested: document.getElementById("amount_requested"),
+            approved_denied: document.getElementById("status").value
+        }
+        let url = 'http://localhost:8080/Project1/requests?request_id=' + request_id + "&status" + approved_denied;
+        let response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            body: JSON.stringify(request_id)
+        });
+        if(response.status==200){
+            alert("Request Updated");
+        }else{
+            alert("Failed to Update");
+        }
+        location.href = 'file:///C:/Users/harri/OneDrive/Desktop/Luke-Harris-P1New/Project1UI/Admin/Admin%20Menu.html';
+    }
+    async function returnMain() {
+        location.href = 'file:///C:/Users/harri/OneDrive/Desktop/Luke-Harris-P1New/Project1UI/Admin/Admin%20Menu.html'
+    }
+
+
+
 </script>
 </html>

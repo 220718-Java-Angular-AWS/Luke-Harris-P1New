@@ -7,18 +7,17 @@
     <title>Document</title>
 </head>
 
-<body>
+<body onlaod="showRequests()">
     <h1>Create Request</h1>
     User ID: <input type="text" id="user_id"><br>
     What do you need Reimbursement for?: <input type="text" id="reason_for_reimbursement"><br>
     Explanation: <input type="text" id="reason_for_request"><br>
     Amount Requested: <input type="text" id="amount_requested"><br>
     <button type="button" onclick="createRequest()">Add New Request</button>
+    <button type="button" onclick="allRequests()">View All Requests</button>
     <div id="idHere"></div>
-
-    <h2>Pending Requests</h2>
 </body>
-
+<div id="allRequests"></div>
 <script>
     let htmlElement= document.getElementById('idHere')
     htmlElement.innerHTML +="<label>User ID#: </label>"+ window.sessionStorage.getItem('userID')
@@ -43,5 +42,29 @@
             alert("Done!");
         } else("Error:(")
     }
+    // async function allRequests() {
+    //     let url= 'http://localhost:8080/Project1/requests';
+    //     let response = await fetch(url, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json; charset=utf-8'
+    //         }
+    //     });
+    //     console.log(requests)
+    //     let array = await response.json();
+    //     let htmlElement = document.getElementById('allRequests');
+    //     for(let i = 0; i < array.length; i++){
+    //         let requestAll = array[i];
+    //         htmlElement.innerHTML += "<p>Request ID: " + requestAll.request_id + "</p>";
+    //         htmlElement.innerHTML += "<p>User ID: " + requestAll.user_id + "</p>";
+    //         htmlElement.innerHTML += "<p>First Name: " + requestAll.reason_for_reimbursement + "</p>";
+    //         htmlElement.innerHTML += "<p>Last Name: " + requestAll.reason_for_request + "</p>";
+    //         htmlElement.innerHTML += "<p>Amout Requested: " + requestAll.amount_requested + "</p>";
+    //         htmlElement.innerHTML += "<p>Approval Status: " + requestAll.approved_denied+ "</p>";
+    //    }
+    async function allRequests() {
+        location.href = "file:///C:/Users/harri/OneDrive/Desktop/Luke-Harris-P1New/Project1UI/Admin/viewRequests.html"
+    }
+  //  }
 </script>
 </html>

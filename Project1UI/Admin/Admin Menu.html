@@ -10,18 +10,34 @@
     <form onsubmit = "return flase">
         <h1>Admin Menu</h1>
             <label>What would you like to do?</label>
-            <button type="button" onclick="viewUsers()">View Users</button>
-            <button type="submit" onclick="approveDeny()">View Requests</button>
+            <br>
+            <br>
+            <button type="button" onclick="viewUsers()">View Users</button> 
+            <br>
+            <br>
+            <button type="button" onclick="deleteUsers()">Delete User</button>
+            <br>
+            <br>
+            <button type="button" onclick="approveDeny()">View Requests</button>
+            <br>
+            <br>
+            <button type="button" onclick="updateRequest()">Update Requests</button>
     </form>
     
 </body>
 <script>
 
     async function viewUsers() {
-        location.href = "file:///C:/Users/harri/OneDrive/Desktop/Revature%20Project%201/Project1UI/Admin/FindUser.html"
+        location.href = "file:///C:/Users/harri/OneDrive/Desktop/Luke-Harris-P1New/Project1UI/Admin/FindUser.html"
     }
     async function approveDeny() {
-        location.href = "file:///C:/Users/harri/OneDrive/Desktop/Revature%20Project%201/Project1UI/Admin/viewRequests.html"
+        location.href = "file:///C:/Users/harri/OneDrive/Desktop/Luke-Harris-P1New/Project1UI/Admin/viewRequests.html"
+    }
+    async function deleteUsers() {
+        location.href = "file:///C:/Users/harri/OneDrive/Desktop/Luke-Harris-P1New/Project1UI/Admin/DeleteUser.html"
+    }
+    async function updateRequest() {
+        location.href = "file:///C:/Users/harri/OneDrive/Desktop/Luke-Harris-P1New/Project1UI/Admin/updateRequests.html"
     }
 </script>
 </html>
